@@ -6,7 +6,7 @@
 /*   By: gnuncio- <gnuncio-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 03:21:46 by gnuncio-          #+#    #+#             */
-/*   Updated: 2022/06/22 07:55:52 by gnuncio-         ###   ########.fr       */
+/*   Updated: 2022/06/22 08:05:15 by gnuncio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@ void	signal_receive(int signal)
 
 int	main(void)
 {
-	int pid;
-	int x;
-	x = 0;
+	int	pid;
+	int	x;
 
+	x = 0;
 	pid = getpid();
 	printf(START"[SERVER STARTED]\n"RESET);
 	printf("SERVER PID: %d\n", pid);
-
 	signal(10, signal_receive);
 	signal(12, signal_receive);
 	while (1)
@@ -35,6 +34,5 @@ int	main(void)
 		x++;
 		sleep(1);
 	}
-
-	return 0;
+	return (0);
 }

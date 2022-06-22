@@ -6,7 +6,7 @@
 /*   By: gnuncio- <gnuncio-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 03:04:47 by gnuncio-          #+#    #+#             */
-/*   Updated: 2022/06/22 07:31:46 by gnuncio-         ###   ########.fr       */
+/*   Updated: 2022/06/22 08:05:39 by gnuncio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@
 # define RESET		"\033[0m"
 # define START		"\033[05;32m"
 
-
 // PROTOTYPES
 int	ft_atoi(const char *nptr);
-
-
 
 #endif

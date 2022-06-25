@@ -13,8 +13,8 @@ FLAGS = -Wall -Wextra -Werror -g3
 MAKE_NOPRINT = $(MAKE) --no-print-directory
 INCLUDES = -I ./includes/ -I ./libs/ft_printf/
 
-SERVER_SRC = server.c
-CLIENT_SRC = client.c
+SERVER_SRC = ./source/server.c
+CLIENT_SRC = ./source/client.c
 
 FT_PRINTF_PATH = libs/ft_printf/
 FT_PRINTF = libs/ft_printf/libftprintf.a
@@ -22,11 +22,11 @@ FT_PRINTF = libs/ft_printf/libftprintf.a
 all:$(SERVER) $(CLIENT)
 
 $(SERVER):${FT_PRINTF}
-	@$(CC) $(INCLUDES) $(SERVER_SRC) $(UTILS_SRC) $(FT_PRINTF) -o $(SERVER)
+	@$(CC) $(INCLUDES) $(FLAGS) $(SERVER_SRC) $(UTILS_SRC) $(FT_PRINTF) -o $(SERVER)
 	@echo "$(GREEN)server compiled 🖧 $(RESET)"
 
 $(CLIENT):
-	@$(CC) $(INCLUDES) $(CLIENT_SRC) $(UTILS_SRC) $(FT_PRINTF) -o $(CLIENT)
+	@$(CC) $(INCLUDES) $(FLAGS) $(CLIENT_SRC) $(UTILS_SRC) $(FT_PRINTF) -o $(CLIENT)
 	@echo "$(GREEN)cliente compiled 🌐 $(RESET)"
 
 $(FT_PRINTF):

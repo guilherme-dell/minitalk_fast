@@ -6,53 +6,43 @@
 /*   By: gnuncio- <gnuncio-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 03:21:46 by gnuncio-          #+#    #+#             */
-/*   Updated: 2022/06/25 07:14:37 by gnuncio-         ###   ########.fr       */
+/*   Updated: 2022/06/25 12:00:33 by gnuncio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void	binary_to_char(int signal)
+static void	binary_to_char(int signal, siginfo_t *info, void *context)
 {
-	static int	binary[8];
-	static int	i = 0;
-	static int	base = 128;
-	static int	total = 0;
-	char		character;
+	static int		base = 1;
+	static char		character = 0;
+	int				pid;
 
+	context = (void *)context;
+	pid = info->si_pid;
 	if (signal == SIGUSR1)
+		character += base;
+	base *= 2;
+	if (base == 256)
 	{
-		total = total + (base * 1);
-		base = base / 2;
-		i++;
-	}
-	else
-	{
-		base = base / 2;
-		i++;
-	}
-	if (i == 8)
-	{
-		character = total;
 		ft_printf("%c", character);
-		total = 0;
-		base = 128;
-		i = 0;
+		base = 1;
+		character = 0;
 	}
-	usleep(2000);
+	usleep(200);
+	kill(pid, SIGUSR1);
 }
 
 int	main(void)
 {
-	int	pid;
-	int	x;
+	struct sigaction	sa;
 
-	x = 0;
-	pid = getpid();
 	ft_printf(START"[SERVER STARTED]\n"RESET);
-	ft_printf("SERVER PID: %d\n", pid);
-	signal(SIGUSR1, binary_to_char);
-	signal(SIGUSR2, binary_to_char);
+	ft_printf("SERVER PID:\033[1;33m %d\033[0m\n", getpid());
+	sa.sa_sigaction = binary_to_char;
+	sa.sa_flags = SA_SIGINFO;
+	if (sigaction(SIGUSR1, &sa, 0) < 0 || sigaction(SIGUSR2, &sa, 0) < 0)
+		return (1);
 	while (1)
 		pause();
 	return (0);

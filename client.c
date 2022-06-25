@@ -6,16 +6,22 @@
 /*   By: gnuncio- <gnuncio-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 03:12:24 by gnuncio-          #+#    #+#             */
-/*   Updated: 2022/06/25 07:16:03 by gnuncio-         ###   ########.fr       */
+/*   Updated: 2022/06/25 11:03:56 by gnuncio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-//SIGUSR1 1
-//SIGUSR2 0
-void	char_to_binary(int pid, char c)
+
+static int	g_package;
+
+void	status_package(int signal)
 {
-	t_packge	packge;
+	if (signal == SIGUSR1)
+		g_package = 1;
+}
+
+void	char_to_binary(int pid, int c)
+{
 	int			i;
 	int			character;
 
@@ -23,27 +29,19 @@ void	char_to_binary(int pid, char c)
 	character = c;
 	while (i < 8)
 	{
-		if (character % 2 == 1)
-			packge.bin[7 - i] = "1";
-		else
-			packge.bin[7 - i] = "0";
-		character = character / 2;
-		i++;
-	}
-	i = 0;
-	while (*packge.bin[i] != '\0')
-	{
-		if (ft_atoi(packge.bin[i]) == 1)
+		if (g_package == 1)
 		{
-			kill(pid, SIGUSR1);
-			usleep(2500);
+			if (character % 2 == 1)
+				kill(pid, SIGUSR1);
+			else
+				kill(pid, SIGUSR2);
+			character = character / 2;
+			i++;
+			g_package = 0;
 		}
-		else
-		{
-			kill(pid, SIGUSR2);
-			usleep(2500);
-		}
-		i++;
+		signal(SIGUSR1, status_package);
+		while (!g_package)
+			pause();
 	}
 }
 
@@ -53,6 +51,7 @@ int	main(int argc, char **argv)
 	int	i;
 
 	i = 0;
+	g_package = 1;
 	if (argc != 3)
 	{
 		ft_printf("invalid arguments\n");
@@ -69,5 +68,3 @@ int	main(int argc, char **argv)
 	char_to_binary(pid, '\n');
 	return (0);
 }
-
-// kill -l EXIBTE TODOS OS SINAIS 'a'

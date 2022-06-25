@@ -6,7 +6,7 @@
 /*   By: gnuncio- <gnuncio-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 03:12:24 by gnuncio-          #+#    #+#             */
-/*   Updated: 2022/06/25 11:03:56 by gnuncio-         ###   ########.fr       */
+/*   Updated: 2022/06/25 13:39:55 by gnuncio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	status_package(int signal)
 
 void	char_to_binary(int pid, int c)
 {
-	int			i;
+	int			binary_index;
 	int			character;
 
-	i = 0;
+	binary_index = 0;
 	character = c;
-	while (i < 8)
+	while (binary_index < 8)
 	{
 		if (g_package == 1)
 		{
@@ -36,7 +36,7 @@ void	char_to_binary(int pid, int c)
 			else
 				kill(pid, SIGUSR2);
 			character = character / 2;
-			i++;
+			binary_index++;
 			g_package = 0;
 		}
 		signal(SIGUSR1, status_package);
@@ -65,6 +65,7 @@ int	main(int argc, char **argv)
 		char_to_binary(pid, argv[2][i]);
 		i++;
 	}
+	ft_printf("\033[0;34mPackage sent :)\033[0m\n");
 	char_to_binary(pid, '\n');
 	return (0);
 }
